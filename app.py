@@ -64,7 +64,28 @@ def precipitation():
     return jsonify(precip_dict)
 
 # Stations Route
+@app.route("/api/v1.0/stations")
+def stations():
+    """Return a list of all stations and their ID"""
 
+    # Query all stations and their ID
+    stats = sess.query(meas.station, stat.name)\
+        .filter(meas.station == stat.station)\
+        .group_by(meas.station)\
+        .all()
+
+    # Create diictionary of stations
+    all_stats = []
+    for i, n in stats:
+        stat_row = {}
+        stat_row["Station ID"] = i
+        stat_row["Name"] = n
+        all_stats.append(stat_row)
+
+    # Return JSON representation
+        return jsonify(all_stats)
+
+# Tobs route
 
 if __name__ == "__main__":
     app.run(debug=True)
