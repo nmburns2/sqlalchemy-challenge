@@ -1,7 +1,7 @@
 
 # Setup and Import Dependencies
 
-import pandas as import pd
+import pandas as pd
 import numpy as np
 import datetime as dt
 import sqlalchemy
@@ -44,3 +44,27 @@ def welcome():
         f"/api/v1.0/start/end<br/>"
     )
 
+# Precipitation Route
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+    """Return a list of precipitation data and dates."""
+
+    # Query prcp and date results
+    precip = sess.query(meas.prcp, meas.date).all()
+
+    # Convert query results to a dictionary
+    precip_dict = []
+    for p,d in precip:
+        row = {}
+        row["Date"] = d
+        row["Precipitation"] = p
+        precip_dict.append(row)
+
+    # Return JSON representation
+    return jsonify(precip_dict)
+
+# Stations Route
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
