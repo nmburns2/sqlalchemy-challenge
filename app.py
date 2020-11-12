@@ -115,9 +115,5 @@ def tobs():
         # Return JSON representation
         return jsonify(most_act)
 
-
-
-    
-
 if __name__ == "__main__":
     app.run(debug=True)
